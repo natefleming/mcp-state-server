@@ -1,0 +1,20 @@
+# Databricks App configuration
+# This file defines how the app runs when deployed as a Databricks App
+# Following the pattern from: https://github.com/databricks/app-templates/tree/main/mcp-server-hello-world
+
+command: ["sh", "-c", "pip install -r requirements.txt && python -m server.main"]
+
+# Environment variables (optional - can also be set via Databricks App settings)
+env:
+  - name: LOG_LEVEL
+    value: DEBUG
+  - name: LAKEBASE_INSTANCE_NAME
+    value: "mcp-state-server-pg"
+  - name: LAKEBASE_CLIENT_ID
+    valueFrom: lakebase_client_id
+  - name: LAKEBASE_HOST
+    valueFrom: lakebase_host
+  - name: LAKEBASE_CLIENT_SECRET
+    valueFrom: lakebase_client_secret
+
+

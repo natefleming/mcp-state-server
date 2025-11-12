@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=./bundle_schema.json
+# Databricks Asset Bundle configuration
+bundle:
+  name: mcp-state-server
+
+variables:
+  lakebase_instance_name:
+    description: "Databricks Lakehouse Postgres instance name (optional, will use first available if not set)"
+    default: "mcp-state-server-pg"
+
+    
+resources:
+  apps:
+    mcp_state_server:
+      name: mcp-state-server
+      source_code_path: .
+      description: MCP server for conversation and preference persistence using Databricks Lakehouse Postgres
+      resources:
+        - name: lakebase
+          database:
+            instance_name: ${var.lakebase_instance_name}
+            database_name: databricks_postgres
+            permission: CAN_CONNECT_AND_CREATE
+        - name: lakebase_host
+          secret:
+            scope: retail_consumer_goods
+            key: RETAIL_AI_DATABRICKS_HOST
+            permission: READ
+        - name: lakebase_client_id
+          secret:
+            scope: retail_consumer_goods
+            key: RETAIL_AI_DATABRICKS_CLIENT_ID
+            permission: READ
+        - name: lakebase_client_secret
+          secret:
+            scope: retail_consumer_goods
+            key: RETAIL_AI_DATABRICKS_CLIENT_SECRET
+            permission: READ
+      user_api_scopes:
+        - files.files
+
+targets:
+  default:
+    # Environment variables can be set via workspace configuration or app settings
+    # The code will automatically discover the instance if DATABRICKS_POSTGRES_INSTANCE_NAME is not set
+    variables: {}
+
+
+
