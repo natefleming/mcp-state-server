@@ -161,27 +161,27 @@ databricks secrets create-scope \
 # For Azure: https://adb-<workspace-id>.<deployment>.azuredatabricks.net
 # For AWS: https://<workspace-id>.cloud.databricks.com
 # For GCP: https://<workspace-id>.gcp.databricks.com
-DATABRICKS_HOST="https://adb-1234567890123456.7.azuredatabricks.net"
+LAKEBASE_HOST="https://adb-1234567890123456.7.azuredatabricks.net"
 
 # Use the Client ID and Secret from Step 1
-CLIENT_ID="your-client-id-from-step-1"
-CLIENT_SECRET="your-client-secret-from-step-1"
+LAKEBASE_CLIENT_ID="your-client-id-from-step-1"
+LAKEBASE_CLIENT_SECRET="your-client-secret-from-step-1"
 
 # Store the secrets
 databricks secrets put \
   --scope "retail_consumer_goods" \
   --key "RETAIL_AI_DATABRICKS_HOST" \
-  --string-value "$DATABRICKS_HOST"
+  --string-value "$LAKEBASE_HOST"
 
 databricks secrets put \
   --scope "retail_consumer_goods" \
   --key "RETAIL_AI_DATABRICKS_CLIENT_ID" \
-  --string-value "$CLIENT_ID"
+  --string-value "$LAKEBASE_CLIENT_ID"
 
 databricks secrets put \
   --scope "retail_consumer_goods" \
   --key "RETAIL_AI_DATABRICKS_CLIENT_SECRET" \
-  --string-value "$CLIENT_SECRET"
+  --string-value "$LAKEBASE_CLIENT_SECRET"
 
 # Verify secrets are stored
 databricks secrets list --scope "retail_consumer_goods"
@@ -189,9 +189,9 @@ databricks secrets list --scope "retail_consumer_goods"
 
 **Replace these values:**
 - `retail_consumer_goods` - Must match the scope name in `databricks.yml`
-- `DATABRICKS_HOST` - Your Databricks workspace URL
-- `CLIENT_ID` - The Application ID from Step 1
-- `CLIENT_SECRET` - The Client Secret from Step 1
+- `LAKEBASE_HOST` - Your Databricks workspace URL (e.g., `https://adb-1234567890123456.7.azuredatabricks.net`)
+- `LAKEBASE_CLIENT_ID` - The Application ID from Step 1 (UUID format, e.g., `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
+- `LAKEBASE_CLIENT_SECRET` - The Client Secret from Step 1 (keep this secure - never commit to version control!)
 
 **Note**: If you use a different secret scope name, update `databricks.yml` to match:
 ```yaml
@@ -247,14 +247,14 @@ touch .env  # Create new file
 Open `.env` in a text editor and add the following:
 
 ```bash
-# Databricks Workspace Configuration
-DATABRICKS_HOST=https://adb-1234567890123456.7.azuredatabricks.net
-DATABRICKS_CLIENT_ID=your-client-id-from-step-1
-DATABRICKS_CLIENT_SECRET=your-client-secret-from-step-1
+# Databricks Workspace Configuration (for service principal authentication)
+LAKEBASE_HOST=https://adb-1234567890123456.7.azuredatabricks.net
+LAKEBASE_CLIENT_ID=your-client-id-from-step-1
+LAKEBASE_CLIENT_SECRET=your-client-secret-from-step-1
 
 # Lakehouse Postgres Instance
-LAKEBASE_INSTANCE_NAME=mcp-state-server-pg
-DATABRICKS_POSTGRES_INSTANCE_NAME=mcp-state-server-pg
+LAKEBASE_INSTANCE_NAME=your-instance-name-from-step-2
+DATABRICKS_POSTGRES_INSTANCE_NAME=your-instance-name-from-step-2
 
 # Alternative: Direct PostgreSQL Connection (for local testing)
 # PGHOST=localhost
@@ -268,10 +268,10 @@ LOG_LEVEL=DEBUG
 ```
 
 **Replace these values:**
-- `DATABRICKS_HOST` - Your Databricks workspace URL from Step 3
-- `DATABRICKS_CLIENT_ID` - The Client ID from Step 1
-- `DATABRICKS_CLIENT_SECRET` - The Client Secret from Step 1
-- `LAKEBASE_INSTANCE_NAME` - The instance name from Step 2
+- `LAKEBASE_HOST` - Your Databricks workspace URL from Step 3 (e.g., `https://adb-1234567890123456.7.azuredatabricks.net`)
+- `LAKEBASE_CLIENT_ID` - The Application ID (Client ID) from Step 1 (UUID format, e.g., `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
+- `LAKEBASE_CLIENT_SECRET` - The Client Secret from Step 1 (keep this secure - never commit to version control!)
+- `LAKEBASE_INSTANCE_NAME` - The instance name from Step 2 (e.g., `mcp-state-server-pg`)
 - `DATABRICKS_POSTGRES_INSTANCE_NAME` - Same as LAKEBASE_INSTANCE_NAME
 
 **For local testing** (optional):
