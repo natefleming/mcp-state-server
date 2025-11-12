@@ -2,7 +2,7 @@
 # This file defines how the app runs when deployed as a Databricks App
 # Following the pattern from: https://github.com/databricks/app-templates/tree/main/mcp-server-hello-world
 
-command: ["sh", "-c", "pip install -r requirements.txt && python -m server.main"]
+command: ["sh", "-c", "pip install -r requirements.txt && python -m main"]
 
 # Environment variables (optional - can also be set via Databricks App settings)
 env:

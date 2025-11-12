@@ -17,6 +17,7 @@ def load_preference_tools(mcp_server: FastMCP) -> None:
     Args:
         mcp_server: The FastMCP server instance to register tools with.
     """
+
     @mcp_server.tool()
     async def save_preference(
         user_id: str,
@@ -74,7 +75,10 @@ def load_preference_tools(mcp_server: FastMCP) -> None:
             preference = repo.get_preference(user_id, preference_key)
 
             if not preference:
-                return {"success": False, "error": f"Preference {preference_key} not found for user {user_id}"}
+                return {
+                    "success": False,
+                    "error": f"Preference {preference_key} not found for user {user_id}",
+                }
 
             return {"success": True, "preference": preference.model_dump()}
         except Exception as e:
@@ -127,9 +131,15 @@ def load_preference_tools(mcp_server: FastMCP) -> None:
 
             if deleted:
                 logger.info(f"Deleted preference {preference_key} for user {user_id}")
-                return {"success": True, "message": f"Preference {preference_key} deleted successfully"}
+                return {
+                    "success": True,
+                    "message": f"Preference {preference_key} deleted successfully",
+                }
             else:
-                return {"success": False, "error": f"Preference {preference_key} not found for user {user_id}"}
+                return {
+                    "success": False,
+                    "error": f"Preference {preference_key} not found for user {user_id}",
+                }
         except Exception as e:
             logger.error(f"Error deleting preference: {e}")
             return {"success": False, "error": str(e)}
@@ -152,8 +162,11 @@ def load_preference_tools(mcp_server: FastMCP) -> None:
             count = repo.delete_all_preferences(user_id)
             logger.info(f"Deleted {count} preferences for user {user_id}")
 
-            return {"success": True, "count": count, "message": f"Deleted {count} preferences for user {user_id}"}
+            return {
+                "success": True,
+                "count": count,
+                "message": f"Deleted {count} preferences for user {user_id}",
+            }
         except Exception as e:
             logger.error(f"Error deleting all preferences: {e}")
             return {"success": False, "error": str(e)}
-

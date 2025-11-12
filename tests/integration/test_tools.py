@@ -3,7 +3,10 @@
 import pytest
 
 from mcp_state_server.database.connection import initialize_db_connection
-from mcp_state_server.database.repository import ConversationRepository, UserPreferencesRepository
+from mcp_state_server.database.repository import (
+    ConversationRepository,
+    UserPreferencesRepository,
+)
 from mcp_state_server.models.conversation import Conversation, ConversationMessage
 from mcp_state_server.models.user_preferences import UserPreferences
 
@@ -33,7 +36,7 @@ def setup_db(test_db_connection) -> None:
 async def test_save_and_get_conversation_tool(setup_db, test_db_connection) -> None:
     """Test save and get conversation tool."""
     repo = ConversationRepository(test_db_connection)
-    
+
     conversation = Conversation(
         id="conv_123",
         user_id="user_456",
@@ -52,7 +55,7 @@ async def test_save_and_get_conversation_tool(setup_db, test_db_connection) -> N
 async def test_list_conversations_tool(setup_db, test_db_connection) -> None:
     """Test list conversations tool."""
     repo = ConversationRepository(test_db_connection)
-    
+
     for i in range(3):
         conversation = Conversation(
             id=f"conv_{i}",
@@ -69,14 +72,14 @@ async def test_list_conversations_tool(setup_db, test_db_connection) -> None:
 async def test_save_and_get_message_tool(setup_db, test_db_connection) -> None:
     """Test save and get message tool."""
     repo = ConversationRepository(test_db_connection)
-    
+
     # First create a conversation
     conversation = Conversation(
         id="conv_123",
         user_id="user_456",
     )
     repo.save_conversation(conversation)
-    
+
     # Save a message
     message = ConversationMessage(
         conversation_id="conv_123",
@@ -95,7 +98,7 @@ async def test_save_and_get_message_tool(setup_db, test_db_connection) -> None:
 async def test_save_and_get_preference_tool(setup_db, test_db_connection) -> None:
     """Test save and get preference tool."""
     repo = UserPreferencesRepository(test_db_connection)
-    
+
     preference = UserPreferences(
         user_id="user_456",
         preference_key="theme",
@@ -113,7 +116,7 @@ async def test_save_and_get_preference_tool(setup_db, test_db_connection) -> Non
 async def test_get_all_preferences_tool(setup_db, test_db_connection) -> None:
     """Test get all preferences tool."""
     repo = UserPreferencesRepository(test_db_connection)
-    
+
     repo.save_preference(
         UserPreferences(
             user_id="user_456",

@@ -112,9 +112,11 @@ class DatabaseConnection:
             max_connections: Maximum pool connections
         """
         self.use_databricks_auth = use_databricks_auth
-        self.instance_name = instance_name or os.getenv(
-            "LAKEBASE_INSTANCE_NAME"
-        ) or os.getenv("DATABRICKS_POSTGRES_INSTANCE_NAME")
+        self.instance_name = (
+            instance_name
+            or os.getenv("LAKEBASE_INSTANCE_NAME")
+            or os.getenv("DATABRICKS_POSTGRES_INSTANCE_NAME")
+        )
 
         if use_databricks_auth:
             # Use Databricks SDK for authentication
@@ -122,7 +124,7 @@ class DatabaseConnection:
             lakebase_client_id = os.getenv("LAKEBASE_CLIENT_ID")
             lakebase_client_secret = os.getenv("LAKEBASE_CLIENT_SECRET")
             lakebase_host = os.getenv("LAKEBASE_HOST")
-            
+
             if lakebase_client_id and lakebase_client_secret:
                 # Use service principal authentication with LAKEBASE credentials
                 logger.info("Using LAKEBASE service principal authentication")
@@ -205,7 +207,9 @@ class DatabaseConnection:
                 logger.info(f"Retrieved database instance: {self.instance_name}")
             else:
                 # Try to find instance from environment or list available instances
-                instance_name_env = os.getenv("LAKEBASE_INSTANCE_NAME") or os.getenv("DATABRICKS_POSTGRES_INSTANCE_NAME")
+                instance_name_env = os.getenv("LAKEBASE_INSTANCE_NAME") or os.getenv(
+                    "DATABRICKS_POSTGRES_INSTANCE_NAME"
+                )
                 if instance_name_env:
                     self._database_instance = (
                         self._workspace_client.database.get_database_instance(

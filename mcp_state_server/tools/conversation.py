@@ -17,6 +17,7 @@ def load_conversation_tools(mcp_server: FastMCP) -> None:
     Args:
         mcp_server: The FastMCP server instance to register tools with.
     """
+
     @mcp_server.tool()
     async def save_conversation(
         conversation_id: str,
@@ -50,7 +51,11 @@ def load_conversation_tools(mcp_server: FastMCP) -> None:
             saved = repo.save_conversation(conversation)
             logger.info(f"Saved conversation {conversation_id} for user {user_id}")
 
-            return {"success": True, "conversation_id": saved.id, "message": f"Conversation {saved.id} saved successfully"}
+            return {
+                "success": True,
+                "conversation_id": saved.id,
+                "message": f"Conversation {saved.id} saved successfully",
+            }
         except Exception as e:
             logger.error(f"Error saving conversation: {e}")
             return {"success": False, "error": str(e)}
@@ -77,7 +82,10 @@ def load_conversation_tools(mcp_server: FastMCP) -> None:
             conversation = repo.get_conversation(conversation_id, include_messages)
 
             if not conversation:
-                return {"success": False, "error": f"Conversation {conversation_id} not found"}
+                return {
+                    "success": False,
+                    "error": f"Conversation {conversation_id} not found",
+                }
 
             return {"success": True, "conversation": conversation.model_dump()}
         except Exception as e:
@@ -135,9 +143,15 @@ def load_conversation_tools(mcp_server: FastMCP) -> None:
 
             if deleted:
                 logger.info(f"Deleted conversation {conversation_id}")
-                return {"success": True, "message": f"Conversation {conversation_id} deleted successfully"}
+                return {
+                    "success": True,
+                    "message": f"Conversation {conversation_id} deleted successfully",
+                }
             else:
-                return {"success": False, "error": f"Conversation {conversation_id} not found"}
+                return {
+                    "success": False,
+                    "error": f"Conversation {conversation_id} not found",
+                }
         except Exception as e:
             logger.error(f"Error deleting conversation: {e}")
             return {"success": False, "error": str(e)}
@@ -181,7 +195,11 @@ def load_conversation_tools(mcp_server: FastMCP) -> None:
             saved = repo.save_message(message)
             logger.info(f"Saved message {saved.id} to conversation {conversation_id}")
 
-            return {"success": True, "message_id": saved.id, "message": f"Message saved with ID: {saved.id}"}
+            return {
+                "success": True,
+                "message_id": saved.id,
+                "message": f"Message saved with ID: {saved.id}",
+            }
         except Exception as e:
             logger.error(f"Error saving message: {e}")
             return {"success": False, "error": str(e)}
@@ -231,10 +249,12 @@ def load_conversation_tools(mcp_server: FastMCP) -> None:
 
             if deleted:
                 logger.info(f"Deleted message {message_id}")
-                return {"success": True, "message": f"Message {message_id} deleted successfully"}
+                return {
+                    "success": True,
+                    "message": f"Message {message_id} deleted successfully",
+                }
             else:
                 return {"success": False, "error": f"Message {message_id} not found"}
         except Exception as e:
             logger.error(f"Error deleting message: {e}")
             return {"success": False, "error": str(e)}
-

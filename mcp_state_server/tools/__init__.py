@@ -23,6 +23,7 @@ def load_tools(mcp_server: FastMCP) -> None:
         mcp_server: The FastMCP server instance to register tools with. This is the
                    main server object that handles tool registration and routing.
     """
+
     # Register health and user tools
     @mcp_server.tool()
     async def health() -> dict[str, Any]:
@@ -79,7 +80,7 @@ def load_tools(mcp_server: FastMCP) -> None:
                 - active (bool): Whether the user account is active
         """
         try:
-            from server.utils import get_user_authenticated_workspace_client
+            from mcp_state_server.utils import get_user_authenticated_workspace_client
 
             w = get_user_authenticated_workspace_client()
             user = w.current_user.me()
@@ -95,6 +96,7 @@ def load_tools(mcp_server: FastMCP) -> None:
     # Load conversation and preference tools
     load_conversation_tools(mcp_server)
     load_preference_tools(mcp_server)
+
 
 __all__ = [
     "load_tools",

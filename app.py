@@ -27,7 +27,7 @@ from mcp_state_server.database.connection import initialize_db_connection
 from mcp_state_server.database.schema import provision_schema
 
 from mcp_state_server.tools import load_tools
-from server.utils import header_store
+from mcp_state_server.utils import header_store
 
 
 from dotenv import load_dotenv, find_dotenv
@@ -87,7 +87,7 @@ app = FastAPI(
 )
 
 
-@app.get("/", include_in_schema=False)
+@app.get("/", include_in_schema=False, response_model=None)
 async def serve_index() -> FileResponse | dict[str, str]:
     """Serve the index page"""
     if STATIC_DIR.exists() and (STATIC_DIR / "index.html").exists():

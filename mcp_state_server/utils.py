@@ -6,15 +6,17 @@ from typing import Any
 
 from databricks.sdk import WorkspaceClient
 
-header_store: contextvars.ContextVar[dict[str, Any]] = contextvars.ContextVar("header_store")
+header_store: contextvars.ContextVar[dict[str, Any]] = contextvars.ContextVar(
+    "header_store"
+)
 
 
 def get_workspace_client() -> WorkspaceClient:
     """
     Get a WorkspaceClient for server operations.
-    
+
     Uses LAKEBASE_* environment variables if available, otherwise falls back to default authentication.
-    
+
     Returns:
         WorkspaceClient: Authenticated workspace client
     """
@@ -22,7 +24,7 @@ def get_workspace_client() -> WorkspaceClient:
     lakebase_client_id = os.getenv("LAKEBASE_CLIENT_ID")
     lakebase_client_secret = os.getenv("LAKEBASE_CLIENT_SECRET")
     lakebase_host = os.getenv("LAKEBASE_HOST")
-    
+
     if lakebase_client_id and lakebase_client_secret:
         # Use service principal authentication with LAKEBASE credentials
         if lakebase_host:
@@ -44,13 +46,13 @@ def get_workspace_client() -> WorkspaceClient:
 def get_user_authenticated_workspace_client() -> WorkspaceClient:
     """
     Get a WorkspaceClient authenticated as the current user.
-    
+
     When running in a Databricks App, this uses the user's token from request headers.
     When running locally, it uses the default authentication.
-    
+
     Returns:
         WorkspaceClient: Authenticated workspace client
-        
+
     Raises:
         ValueError: If running in Databricks App but token not found in headers
     """
@@ -62,7 +64,7 @@ def get_user_authenticated_workspace_client() -> WorkspaceClient:
         lakebase_client_id = os.getenv("LAKEBASE_CLIENT_ID")
         lakebase_client_secret = os.getenv("LAKEBASE_CLIENT_SECRET")
         lakebase_host = os.getenv("LAKEBASE_HOST")
-        
+
         if lakebase_client_id and lakebase_client_secret:
             if lakebase_host:
                 return WorkspaceClient(
